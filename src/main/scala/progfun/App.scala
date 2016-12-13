@@ -5,24 +5,29 @@ class Coffee {
 }
 
 class CartaCredito {
-  def paga(p: Double) = {
+  def charge(p: Double) = {
     println(s"Pagato $p euro tramite carta di credito")
   }
 }
 
+case class Payment(cc: CartaCredito, amount: Double) {
+  def pay() {
+    cc.charge(amount)
+  }
+}
 
 object App {
 
-  def buyCoffee(cc: CartaCredito): Coffee = {
+  def buyCoffee(cc: CartaCredito): (Coffee, Payment) = {
     val coffee = new Coffee()
-    cc.paga(coffee.prezzo)
+    val payment = Payment(cc, coffee.prezzo)
 
-    coffee
+    (coffee, payment)
   }
 
-  def buyCoffees(cc: CartaCredito, n: Int): List[Coffee] = {
+  def buyCoffees(cc: CartaCredito, n: Int): List[(Coffee, Payment)] = {
     // con var result e' ri-assegnabile
-    var result = List[Coffee]()
+    var result = List[(Coffee, Payment)]()
 
     for (i <- Range(0, n))
       result = buyCoffee(cc) :: result
@@ -35,10 +40,13 @@ object App {
     */
   def main(args: Array[String]) {
     val cc = new CartaCredito
-    println("Result is " + buyCoffee(cc))
+    val coffeePayment = buyCoffee(cc)
+    println("Ho preso un " + coffeePayment._1)
+    coffeePayment._2.pay()
 
     val coffees = buyCoffees(cc, 10)
-    println(s"comprati ${coffees.length} caffe'")
+    println(s"comprati ${coffees.length} caffe', da pagare!")
+    coffees.map(_._2.pay())
   }
 
 }
