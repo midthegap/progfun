@@ -33,19 +33,7 @@ object App {
     * Program entry point.
     */
   def main(args: Array[String]) {
-    val cc = new CartaCredito
-    val coffeePayment = buyCoffee(cc)
-    println("Ho preso un " + coffeePayment._1)
-    coffeePayment._2.pay()
-
-    val coffees = buyCoffees(cc, 10)
-    println(s"comprati ${coffees.length} caffe', da pagare!")
-    val payments = coffees.map(_._2)
-    //  foldLeft[B](z: B)(op: (B, A) ⇒ B): B
-    // Applies a binary operator to a start value and all elements of this sequence, going left to right.
-    val total = payments.foldLeft(0d)((sum: Double, p: Payment) => sum + p.amount)
-    val totalPayment = Payment(cc, total)
-    totalPayment.pay()
+    println(s"fattoriale di 5 imp: ${Factorial.imperativeFactorial(5)}, functional: ${Factorial.factorial(5)}")
   }
 
 }
