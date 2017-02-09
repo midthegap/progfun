@@ -34,6 +34,8 @@ object App {
     */
   def main(args: Array[String]) {
     println(s"fattoriale di 5 imp: ${Factorial.imperativeFactorial(5)}, functional: ${Factorial.factorial(5)}")
+
+    test.stampa()
   }
 
 }
