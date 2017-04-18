@@ -5,13 +5,19 @@ class Coffee {
 }
 
 class CartaCredito {
-  def charge(p: Double) = {
-    println(s"Pagato $p euro tramite carta di credito")
-  }
+  def charge(p: Double): Option[Double] =
+    if (Math.random() > 0.5) {
+      val totale = p * (1.05)
+      println(s"Pagato $totale euro tramite carta di credito")
+      Some(totale)
+    } else {
+      println("Pagamento non riuscito")
+      None
+    }
 }
 
 case class Payment(cc: CartaCredito, amount: Double) {
-  def pay() {
+  def pay(): Option[Double] = {
     cc.charge(amount)
   }
 }
@@ -33,9 +39,14 @@ object App {
     * Program entry point.
     */
   def main(args: Array[String]) {
-    println(s"fattoriale di 5 imp: ${Factorial.imperativeFactorial(5)}, functional: ${Factorial.factorial(5)}")
+    val cc = new CartaCredito
+    val coffees = buyCoffees(cc, 10)
+    println(s"comprati ${coffees.length} caffe', da pagare singolarmente")
+    val sommePagate: List[Option[Double]] = coffees.map(_._2).map(p => p.pay())
 
-    test.stampa()
+    val totale = sommePagate.map(_.getOrElse(0d)).sum
+
+    println(s"Totale pagato: ${totale}")
   }
 
 }
