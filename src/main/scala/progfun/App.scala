@@ -39,14 +39,7 @@ object App {
     * Program entry point.
     */
   def main(args: Array[String]) {
-    val cc = new CartaCredito
-    val coffees = buyCoffees(cc, 10)
-    println(s"comprati ${coffees.length} caffe', da pagare singolarmente")
-    val sommePagate: List[Option[Double]] = coffees.map(_._2).map(p => p.pay())
-
-    val totale = sommePagate.map(_.getOrElse(0d)).sum
-
-    println(s"Totale pagato: ${totale}")
+    RNG.go()
   }
 
 }
